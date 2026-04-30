@@ -1,4 +1,5 @@
-createFolder = "SQLiteQueries/createHandlerMySQL/"
+import os
+createFolder = os.path.join(os.path.dirname(__file__), "..", "SQLiteQueries", "createHandlerMySQL", "")
 
 def create_tables(sql_file_path,cursor):
     """
@@ -43,7 +44,7 @@ def newTableClass(cursor):
     Args:
         cursor (pymysql.cursors.Cursor): The database cursor to use.
     """
-    create_tables(sql_file_path=createFolder + "create_classes.sql",cursor=cursor)
+    return create_tables(sql_file_path=createFolder + "create_classes.sql",cursor=cursor)
 
 def newTableIPs(cursor):
     """
@@ -55,7 +56,7 @@ def newTableIPs(cursor):
     Args:
         cursor (pymysql.cursors.Cursor): The database cursor to use.
     """
-    create_tables(sql_file_path=createFolder + "create_iplist.sql",cursor=cursor)
+    return create_tables(sql_file_path=createFolder + "create_iplist.sql",cursor=cursor)
 
 def newTableResults(cursor):
     """
@@ -67,7 +68,7 @@ def newTableResults(cursor):
     Args:
         cursor (pymysql.cursors.Cursor): The database cursor to use.
     """
-    create_tables(sql_file_path=createFolder + "create_qresults.sql",cursor=cursor)
+    return create_tables(sql_file_path=createFolder + "create_qresults.sql",cursor=cursor)
 
 def newTableDocuments(cursor):
     """
@@ -79,7 +80,7 @@ def newTableDocuments(cursor):
     Args:
         cursor (pymysql.cursors.Cursor): The database cursor to use.
     """
-    create_tables(sql_file_path=createFolder + "create_documents.sql",cursor=cursor)
+    return create_tables(sql_file_path=createFolder + "create_documents.sql",cursor=cursor)
 
 def newTableConnectionData(cursor):
     """
@@ -91,7 +92,7 @@ def newTableConnectionData(cursor):
     Args:
         cursor (pymysql.cursors.Cursor): The database cursor to use.
     """
-    create_tables(sql_file_path=createFolder + "create_connections.sql",cursor=cursor)
+    return create_tables(sql_file_path=createFolder + "create_connections.sql",cursor=cursor)
 
 def newTablePersonalData(cursor):
     """
@@ -103,7 +104,7 @@ def newTablePersonalData(cursor):
     Args:
         cursor (pymysql.cursors.Cursor): The database cursor to use.
     """
-    create_tables(sql_file_path=createFolder + "create_personal.sql",cursor=cursor)
+    return create_tables(sql_file_path=createFolder + "create_personal.sql",cursor=cursor)
 
 def newTableUsers(cursor):
     """
@@ -115,7 +116,7 @@ def newTableUsers(cursor):
     Args:
         cursor (pymysql.cursors.Cursor): The database cursor to use.
     """
-    create_tables(sql_file_path=createFolder + "create_users.sql",cursor=cursor)
+    return create_tables(sql_file_path=createFolder + "create_users.sql",cursor=cursor)
 
 def newTableBlacklistedEmails(cursor):
     """
@@ -127,7 +128,7 @@ def newTableBlacklistedEmails(cursor):
     Args:
         cursor (pymysql.cursors.Cursor): The database cursor to use.
     """
-    create_tables(sql_file_path=createFolder + "create_blacklisted_emails.sql",cursor=cursor)
+    return create_tables(sql_file_path=createFolder + "create_blacklisted_emails.sql",cursor=cursor)
 
 def newTableBlacklistedIPs(cursor):
     """
@@ -139,7 +140,7 @@ def newTableBlacklistedIPs(cursor):
     Args:
         cursor (pymysql.cursors.Cursor): The database cursor to use.
     """
-    create_tables(sql_file_path=createFolder + "create_blacklisted_ips.sql",cursor=cursor)
+    return create_tables(sql_file_path=createFolder + "create_blacklisted_ips.sql",cursor=cursor)
 
 def newTableRegistrationTokens(cursor):
     """
@@ -151,4 +152,4 @@ def newTableRegistrationTokens(cursor):
     Args:
         cursor (pymysql.cursors.Cursor): The database cursor to use.
     """
-    create_tables(sql_file_path=createFolder + "create_registration_tokens.sql",cursor=cursor)
+    return create_tables(sql_file_path=createFolder + "create_registration_tokens.sql",cursor=cursor)

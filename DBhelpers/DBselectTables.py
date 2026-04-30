@@ -3,7 +3,8 @@ from datetime import datetime
 import inspect
 from .DBbaseline import get_mysql_connection
 import pymysql
-selectFolder = "SQLiteQueries/selectHandler/"
+import os
+selectFolder = os.path.join(os.path.dirname(__file__), "..", "SQLiteQueries", "selectHandler", "")
 
 def print_caller():
     """

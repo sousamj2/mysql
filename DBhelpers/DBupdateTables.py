@@ -2,7 +2,8 @@
 from datetime import datetime
 from DBhelpers.DBselectTables import getUserIdFromEmail
 from DBhelpers.DBbaseline import get_mysql_connection
-selectFolder = "SQLiteQueries/updateHandler/"
+import os
+updateFolder = os.path.join(os.path.dirname(__file__), "..", "SQLiteQueries", "updateHandler", "")
 
 def refresh_last_login_and_ip(email, current_ip):
     conn = get_mysql_connection()
@@ -11,7 +12,7 @@ def refresh_last_login_and_ip(email, current_ip):
 
     try:
         # Read SQL code from file
-        with open(selectFolder + "update_last_login_and_ip.sql", 'r') as file:
+        with open(updateFolder + "update_last_login_and_ip.sql", 'r') as file:
             sql_code = file.read()
             sql_code = sql_code.replace("?","%s")
 
