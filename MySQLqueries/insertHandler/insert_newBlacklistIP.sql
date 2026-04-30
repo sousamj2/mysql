@@ -1,0 +1,1 @@
+INSERT INTO blacklist_ips (ip_id, ip_address, created_at) VALUES (UUID(), %s, NOW())

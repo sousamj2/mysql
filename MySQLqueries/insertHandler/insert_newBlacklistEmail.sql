@@ -1,0 +1,1 @@
+INSERT INTO blacklist_emails (email_id, email, created_at) VALUES (UUID(), %s, NOW())

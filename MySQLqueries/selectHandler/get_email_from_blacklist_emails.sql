@@ -1,0 +1,1 @@
+SELECT email FROM blacklist_emails WHERE email = %s

@@ -1,5 +1,5 @@
 import os
-createFolder = os.path.join(os.path.dirname(__file__), "..", "SQLiteQueries", "createHandlerMySQL", "")
+createFolder = os.path.join(os.path.dirname(__file__), "..", "MySQLqueries", "createHandler", "")
 
 def create_tables(sql_file_path,cursor):
     """
@@ -34,17 +34,6 @@ def create_tables(sql_file_path,cursor):
 
     return status
 
-def newTableClass(cursor):
-    """
-    Creates the 'classes' table in the database.
-
-    This function calls the generic `create_tables` utility to execute the
-    SQL script for creating the `classes` table.
-
-    Args:
-        cursor (pymysql.cursors.Cursor): The database cursor to use.
-    """
-    return create_tables(sql_file_path=createFolder + "create_classes.sql",cursor=cursor)
 
 def newTableIPs(cursor):
     """
@@ -70,17 +59,6 @@ def newTableResults(cursor):
     """
     return create_tables(sql_file_path=createFolder + "create_qresults.sql",cursor=cursor)
 
-def newTableDocuments(cursor):
-    """
-    Creates the 'documents' table in the database.
-
-    This function calls the generic `create_tables` utility to execute the
-    SQL script for creating the `documents` table.
-
-    Args:
-        cursor (pymysql.cursors.Cursor): The database cursor to use.
-    """
-    return create_tables(sql_file_path=createFolder + "create_documents.sql",cursor=cursor)
 
 def newTableConnectionData(cursor):
     """
@@ -94,17 +72,6 @@ def newTableConnectionData(cursor):
     """
     return create_tables(sql_file_path=createFolder + "create_connections.sql",cursor=cursor)
 
-def newTablePersonalData(cursor):
-    """
-    Creates the 'personal' table in the database.
-
-    This function calls the generic `create_tables` utility to execute the
-    SQL script for creating the `personal` table.
-
-    Args:
-        cursor (pymysql.cursors.Cursor): The database cursor to use.
-    """
-    return create_tables(sql_file_path=createFolder + "create_personal.sql",cursor=cursor)
 
 def newTableUsers(cursor):
     """
@@ -118,29 +85,29 @@ def newTableUsers(cursor):
     """
     return create_tables(sql_file_path=createFolder + "create_users.sql",cursor=cursor)
 
-def newTableBlacklistedEmails(cursor):
+def newTableBlacklistEmails(cursor):
     """
-    Creates the 'blacklisted_emails' table in the database.
+    Creates the 'blacklist_emails' table in the database.
     
     This function calls the generic `create_tables` utility to execute the
-    SQL script for creating the `blacklisted_emails` table.
+    SQL script for creating the `blacklist_emails` table.
 
     Args:
         cursor (pymysql.cursors.Cursor): The database cursor to use.
     """
-    return create_tables(sql_file_path=createFolder + "create_blacklisted_emails.sql",cursor=cursor)
+    return create_tables(sql_file_path=createFolder + "create_blacklist_emails.sql",cursor=cursor)
 
-def newTableBlacklistedIPs(cursor):
+def newTableBlacklistIPs(cursor):
     """
-    Creates the 'blacklisted_ips' table in the database.
+    Creates the 'blacklist_ips' table in the database.
     
     This function calls the generic `create_tables` utility to execute the
-    SQL script for creating the `blacklisted_ips` table.
+    SQL script for creating the `blacklist_ips` table.
 
     Args:
         cursor (pymysql.cursors.Cursor): The database cursor to use.
     """
-    return create_tables(sql_file_path=createFolder + "create_blacklisted_ips.sql",cursor=cursor)
+    return create_tables(sql_file_path=createFolder + "create_blacklist_ips.sql",cursor=cursor)
 
 def newTableRegistrationTokens(cursor):
     """

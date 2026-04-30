@@ -1,0 +1,1 @@
+SELECT ip_address FROM blacklist_ips WHERE ip_address = %s
