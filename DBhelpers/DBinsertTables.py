@@ -128,7 +128,7 @@ def insertNewIP(email, ipaddress):
     user_id = getUserIdFromEmail(email)
     if not user_id:
         return "ERROR: There is no user with this email: {email}."
-    insertDict = {"user_id": user_id, "ipvalue": ipaddress}
+    insertDict = {"user_id": user_id, "ip_address": ipaddress}
     status = execute_insert_from_file(insertFolder + insertFile, insertDict)
     return status
 
@@ -160,7 +160,8 @@ def insertNewConnectionData(email, ipaddress):
         "thisloginip": ipaddress,
     }
     status = execute_insert_from_file(insertFolder + insertFile, insertDict)
-    return status, insertNewIP(email, ipaddress) + " " + status
+    ip_status = insertNewIP(email, ipaddress)
+    return status, ip_status
 
 
 

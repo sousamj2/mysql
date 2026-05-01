@@ -1,1 +1,1 @@
-SELECT * FROM users WHERE email = (%s)
+SELECT user_id FROM users WHERE email = %s
