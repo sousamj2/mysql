@@ -301,6 +301,24 @@ def getRegistrationTokenByEmailOrIP(email, ip_address):
         return None
     return retVal
 
+def getRegistrationTokenByToken(token):
+    """
+    Retrieves a registration token by the token string.
+
+    Args:
+        token (str): The token string to check.
+
+    Returns:
+        dict: A dictionary containing the token data, or None if not found.
+    """
+    retVal = getValueFromAnotherValue(
+        selectFolder + "get_registration_token_by_token.sql",
+        token,
+    )
+    if isinstance(retVal, str) and "Error" in retVal:
+        return None
+    return retVal
+
 def isIpBlacklisted(ip_address):
     """
     Checks if an IP address is in the 'blacklist_ips' table.

@@ -24,8 +24,7 @@ def create_tables(sql_file_path,cursor):
             sql_code = file.read()
 
         # Execute the SQL command
-        cursor.execute(sql_code)  # Using executescript to handle multiple statements if exist
-        # conn.commit()
+        cursor.execute(sql_code)
 
         status = "Table created successfully"
     except Exception as e:

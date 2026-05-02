@@ -34,6 +34,7 @@ from .DBselectTables import (
     isEmailBlacklisted,
     getRegistrationToken,
     getRegistrationTokenByEmailOrIP,
+    getRegistrationTokenByToken,
     isIpBlacklisted,
 )
 from .DBdeleteTables import (
