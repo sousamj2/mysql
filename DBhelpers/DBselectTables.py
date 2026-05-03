@@ -31,7 +31,8 @@ def getValueFromAnotherValue(sql_file_path, value1=None , dbName ='explicolivais
         "get_user_profile", 
         "getDataFrom", 
         "getRegistrationToken",
-        "getRegistrationTokenByEmailOrIP"
+        "getRegistrationTokenByEmailOrIP",
+        "getRegistrationTokenByToken"
     ]
     multi_dict_funcs = ["get_quiz_history_for_user"]
 
