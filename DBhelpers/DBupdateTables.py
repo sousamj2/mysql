@@ -3,7 +3,7 @@ from datetime import datetime
 from DBhelpers.DBselectTables import getUserIdFromEmail
 from DBhelpers.DBbaseline import get_mysql_connection
 import os
-updateFolder = os.path.join(os.path.dirname(__file__), "..", "SQLiteQueries", "updateHandler", "")
+updateFolder = os.path.join(os.path.dirname(__file__), "..", "MySQLqueries", "updateHandler", "")
 
 def refresh_last_login_and_ip(email, current_ip):
     conn = get_mysql_connection()

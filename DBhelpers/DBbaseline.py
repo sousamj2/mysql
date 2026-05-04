@@ -104,39 +104,33 @@ def setup_mysql_database():
         
     from DBhelpers import (
         newTableResults,
-        newTableClass,
         newTableConnectionData,
-        newTableDocuments,
         newTableIPs,
-        newTablePersonalData,
         newTableUsers,
-        newTableBlacklistedEmails,
-        newTableBlacklistedIPs,
+        newTableBlacklistEmails,
+        newTableBlacklistIPs,
         newTableRegistrationTokens,
     )
 
     try:
         # Create database if it doesn't exist
         cursor.execute(f"CREATE DATABASE IF NOT EXISTS {MYSQL_NAME}")
-        print(f"Database '{MYSQL_NAME}' created or already exists")
+        print(f"Database '{MYSQL_NAME}' created or already exists", flush=True)
         
         # Switch to the database
         cursor.execute(f"USE {MYSQL_NAME}")
-        print(f"Using database '{MYSQL_NAME}'")
+        print(f"Using database '{MYSQL_NAME}'", flush=True)
         
-        print(newTableUsers(cursor))
-        print(newTableConnectionData(cursor))
-        print(newTablePersonalData(cursor))
-        print(newTableIPs(cursor))
-        print(newTableResults(cursor))
-        print(newTableClass(cursor))
-        print(newTableDocuments(cursor))
-        print(newTableBlacklistedEmails(cursor))
-        print(newTableBlacklistedIPs(cursor))
-        print(newTableRegistrationTokens(cursor))
+        print(newTableUsers(cursor), flush=True)
+        print(newTableConnectionData(cursor), flush=True)
+        print(newTableIPs(cursor), flush=True)
+        print(newTableResults(cursor), flush=True)
+        print(newTableBlacklistEmails(cursor), flush=True)
+        print(newTableBlacklistIPs(cursor), flush=True)
+        print(newTableRegistrationTokens(cursor), flush=True)
         
         # Commit the changes
-        print("Database setup completed successfully!")
+        print("Database setup completed successfully!", flush=True)
                 
     except Exception as err:
         print(f"Error: {err}")

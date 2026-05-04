@@ -1,0 +1,5 @@
+CREATE TABLE IF NOT EXISTS blacklist_ips (
+    ip_id CHAR(36) PRIMARY KEY,
+    ip_address VARCHAR(45) UNIQUE,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);

@@ -3,7 +3,7 @@ from uuid import uuid4
 from datetime import datetime # Import datetime
 from DBhelpers.DBselectTables import getUserIdFromEmail
 import os
-insertFolder = os.path.join(os.path.dirname(__file__), "..", "SQLiteQueries", "insertHandler", "")
+insertFolder = os.path.join(os.path.dirname(__file__), "..", "MySQLqueries", "insertHandler", "")
 
 from .DBbaseline import get_mysql_connection
 
@@ -47,9 +47,8 @@ def execute_insert_from_file(sql_file_path, params_dict):
         # Assuming params_dict is an OrderedDict or that order is known
         params = tuple(params_dict[key] for key in params_dict)
 
-        # print(params)
         # Execute the SQL INSERT
-        cursor.execute(sql_code.replace("?", "%s"), params)
+        cursor.execute(sql_code, params)
         conn.commit()
 
         status = "Insert successful"
@@ -63,7 +62,7 @@ def execute_insert_from_file(sql_file_path, params_dict):
     return status
 
 
-def insertNewUser(first, last, email, h_password=None, username=None):
+def insertNewUser(first, last, email, h_password=None, username=None, ign=None):
     """
     Inserts a new user into the 'users' table.
 
@@ -78,6 +77,7 @@ def insertNewUser(first, last, email, h_password=None, username=None):
         email (str): The user's email address.
         h_password (str, optional): The hashed password for the user. Defaults to None.
         username (str, optional): The user's chosen username. Defaults to the email.
+        ign (str, optional): The user's Minecraft in-game name. Defaults to None.
 
     Returns:
         str: A status message from the database insertion operation.
@@ -92,63 +92,23 @@ def insertNewUser(first, last, email, h_password=None, username=None):
     else:
         g_token = 0
 
+    user_id = str(uuid4())
+
     insertFile = "insert_newUser.sql"
     insertDict = {
+        "user_id": user_id,
         "first": first,
         "last": last,
         "email": email,
         "username": username,
         "h_password": h_password,
+        "ign": ign,
         "g_token": g_token,
     }
     status = execute_insert_from_file(insertFolder + insertFile, insertDict)
     # print("Insert user:",status)
     return status
 
-
-def insertNewPersonalData(
-    email, address, number, floor, door, notes, zip_code1, zip_code2, cell_phone, nif
-):
-    """
-    Inserts a new record into the 'personal' table for a given user.
-
-    This function retrieves the user's ID based on their email, then inserts their
-    detailed personal information (address, NIF, etc.) into the database.
-
-    Args:
-        email (str): The email of the user to whom the data belongs.
-        address (str): The user's street address.
-        number (str): The building number.
-        floor (str): The floor.
-        door (str): The apartment/door number.
-        notes (str): Any additional notes.
-        zip_code1 (str): The first part of the ZIP code.
-        zip_code2 (str): The second part of the ZIP code.
-        cell_phone (str): The user's cell phone number.
-        nif (str): The user's NIF (tax identification number).
-
-    Returns:
-        str: A status message from the database insertion operation.
-    """
-    insertFile = "insert_newPersonalData.sql"
-    user_id = getUserIdFromEmail(email)
-    if not user_id:
-        return "ERROR: There is no user with this email: {email}."
-    insertDict = {
-        "user_id": user_id,
-        "address": address,
-        "number": number,
-        "floor": floor,
-        "door": door,
-        "notes": notes,
-        "zip_code1": zip_code1,
-        "zip_code2": zip_code2,
-        "cell_phone": cell_phone,
-        "nfiscal": nif,
-    }
-    status = execute_insert_from_file(insertFolder + insertFile, insertDict)
-    # print("Insert personal:",status)
-    return status
 
 
 def insertNewIP(email, ipaddress):
@@ -168,7 +128,7 @@ def insertNewIP(email, ipaddress):
     user_id = getUserIdFromEmail(email)
     if not user_id:
         return "ERROR: There is no user with this email: {email}."
-    insertDict = {"user_id": user_id, "ipvalue": ipaddress}
+    insertDict = {"user_id": user_id, "ip_address": ipaddress}
     status = execute_insert_from_file(insertFolder + insertFile, insertDict)
     return status
 
@@ -200,55 +160,9 @@ def insertNewConnectionData(email, ipaddress):
         "thisloginip": ipaddress,
     }
     status = execute_insert_from_file(insertFolder + insertFile, insertDict)
-    return status, insertNewIP(email, ipaddress) + " " + status
+    ip_status = insertNewIP(email, ipaddress)
+    return status, ip_status
 
-
-def insertNewDocument(email, docname, docurl):
-    """
-    Inserts a new document record into the 'documents' table for a given user.
-
-    Args:
-        email (str): The email of the user who owns the document.
-        docname (str): The name or title of the document.
-        docurl (str): The URL or path where the document is stored.
-
-    Returns:
-        str: A status message from the database insertion operation.
-    """
-    insertFile = "insert_newDocument.sql"
-    user_id = getUserIdFromEmail(email)
-    if not user_id:
-        return "ERROR: There is no user with this email: {email}."
-    insertDict = {"user_id": user_id, "docname": docname, "docurl": docurl}
-    status = execute_insert_from_file(insertFolder + insertFile, insertDict)
-    return status
-
-
-def insertNewClass(email, year, childName, disciplina="Matemática"):
-    """
-    Inserts a new class registration into the 'classes' table for a given user.
-
-    Args:
-        email (str): The email of the parent/user registering the class.
-        year (int): The academic year of the class.
-        childName (str): The name of the child attending the class.
-        disciplina (str, optional): The subject of the class. Defaults to "Matemática".
-
-    Returns:
-        str: A status message from the database insertion operation.
-    """
-    insertFile = "insert_newClass.sql"
-    user_id = getUserIdFromEmail(email)
-    if not user_id:
-        return "ERROR: There is no user with this email: {email}."
-    insertDict = {
-        "user_id": user_id,
-        "year": year,
-        "childName": childName,
-        "disciplica": disciplina,
-    }
-    status = execute_insert_from_file(insertFolder + insertFile, insertDict)
-    return status
 
 
 def save_quiz_history(email, results, quiz_config, q_uuid=None, start_ts=None):
@@ -305,9 +219,9 @@ def save_quiz_history(email, results, quiz_config, q_uuid=None, start_ts=None):
     return status
 
 
-def insertNewBlacklistedEmail(email):
+def insertNewBlacklistEmail(email):
     """
-    Inserts a new email into the 'blacklisted_emails' table.
+    Inserts a new email into the 'blacklist_emails' table.
 
     Args:
         email (str): The email to be blacklisted.
@@ -315,15 +229,15 @@ def insertNewBlacklistedEmail(email):
     Returns:
         str: A status message from the database insertion operation.
     """
-    insertFile = "insert_newBlacklistedEmail.sql"
+    insertFile = "insert_newBlacklistEmail.sql"
     insertDict = {"email": email}
     status = execute_insert_from_file(insertFolder + insertFile, insertDict)
     return status
 
 
-def insertNewBlacklistedIP(ip_address):
+def insertNewBlacklistIP(ip_address):
     """
-    Inserts a new IP address into the 'blacklisted_ips' table.
+    Inserts a new IP address into the 'blacklist_ips' table.
 
     Args:
         ip_address (str): The IP address to be blacklisted.
@@ -331,7 +245,7 @@ def insertNewBlacklistedIP(ip_address):
     Returns:
         str: A status message from the database insertion operation.
     """
-    insertFile = "insert_newBlacklistedIP.sql"
+    insertFile = "insert_newBlacklistIP.sql"
     insertDict = {"ip_address": ip_address}
     status = execute_insert_from_file(insertFolder + insertFile, insertDict)
     return status

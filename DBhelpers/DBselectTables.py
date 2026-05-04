@@ -4,7 +4,7 @@ import inspect
 from .DBbaseline import get_mysql_connection
 import pymysql
 import os
-selectFolder = os.path.join(os.path.dirname(__file__), "..", "SQLiteQueries", "selectHandler", "")
+selectFolder = os.path.join(os.path.dirname(__file__), "..", "MySQLqueries", "selectHandler", "")
 
 def print_caller():
     """
@@ -31,7 +31,8 @@ def getValueFromAnotherValue(sql_file_path, value1=None , dbName ='explicolivais
         "get_user_profile", 
         "getDataFrom", 
         "getRegistrationToken",
-        "getRegistrationTokenByEmailOrIP"
+        "getRegistrationTokenByEmailOrIP",
+        "getRegistrationTokenByToken"
     ]
     multi_dict_funcs = ["get_quiz_history_for_user"]
 
@@ -50,8 +51,6 @@ def getValueFromAnotherValue(sql_file_path, value1=None , dbName ='explicolivais
     try:
         with open(sql_file_path, 'r') as file:
             sql_code = file.read()
-            if use_mysql:
-                sql_code = sql_code.replace("?","%s")
 
         if not use_mysql and 'getQuestionFromQid' == caller_function:
             conn.row_factory = sqlite3.Row
@@ -148,14 +147,6 @@ def get_quiz_history_by_uuid(email, quiz_uuid):
     return []
     
 
-def get_user_profile_tier2(email):
-    # print("---------------------------------",email)
-    retVal = getValueFromAnotherValue( selectFolder + "get_T2profile_from_email.sql", email)
-    # print("---------------------------------",retVal)
-    if isinstance(retVal,str) and "Error" in retVal:
-        return None
-    return retVal
-
 def get_user_profile_tier1(email):
     # print("---------------------------------",email)
     retVal = getValueFromAnotherValue( selectFolder + "get_T1profile_from_email.sql", email)
@@ -220,23 +211,6 @@ def submit_query(query, params=None):
         conn.close()
 
 
-def getDataFromNIF(nif):
-    retVal = getValueFromAnotherValue( selectFolder + "get_data_from_nif.sql", nif)
-    if isinstance(retVal,str) and "Error" in retVal:
-        return None
-    return retVal
-
-def getDataFromEmail(email):
-    retVal = getValueFromAnotherValue( selectFolder + "get_data_from_email.sql", email)
-    if isinstance(retVal,str) and "Error" in retVal:
-        return None
-    return retVal
-
-def getDataFromCellNumber(cellNumber):
-    retVal = getValueFromAnotherValue( selectFolder + "get_data_from_cellNumber.sql", cellNumber)
-    if isinstance(retVal,str) and "Error" in retVal:
-        return None
-    return retVal
 
 def getDataFromIPcreated(ip_value):
     retVal = getValueFromAnotherValue( selectFolder + "get_data_from_ip_value.sql", ip_value)
@@ -281,7 +255,7 @@ def getQuestionFromQid(qid):
 
 def isEmailBlacklisted(email):
     """
-    Checks if an email is in the 'blacklisted_emails' table.
+    Checks if an email is in the 'blacklist_emails' table.
 
     Args:
         email (str): The email to check.
@@ -289,7 +263,7 @@ def isEmailBlacklisted(email):
     Returns:
         bool: True if the email is blacklisted, False otherwise.
     """
-    retVal = getValueFromAnotherValue(selectFolder + "get_email_from_blacklisted_emails.sql", email)
+    retVal = getValueFromAnotherValue(selectFolder + "get_email_from_blacklist_emails.sql", email)
     return retVal is not None and not (isinstance(retVal, str) and "Error" in retVal)
 
 
@@ -328,9 +302,27 @@ def getRegistrationTokenByEmailOrIP(email, ip_address):
         return None
     return retVal
 
+def getRegistrationTokenByToken(token):
+    """
+    Retrieves a registration token by the token string.
+
+    Args:
+        token (str): The token string to check.
+
+    Returns:
+        dict: A dictionary containing the token data, or None if not found.
+    """
+    retVal = getValueFromAnotherValue(
+        selectFolder + "get_registration_token_by_token.sql",
+        token,
+    )
+    if isinstance(retVal, str) and "Error" in retVal:
+        return None
+    return retVal
+
 def isIpBlacklisted(ip_address):
     """
-    Checks if an IP address is in the 'blacklisted_ips' table.
+    Checks if an IP address is in the 'blacklist_ips' table.
 
     Args:
         ip_address (str): The IP address to check.
@@ -339,6 +331,6 @@ def isIpBlacklisted(ip_address):
         bool: True if the IP is blacklisted, False otherwise.
     """
     retVal = getValueFromAnotherValue(
-        selectFolder + "get_ip_from_blacklisted_ips.sql", ip_address
+        selectFolder + "get_ip_from_blacklist_ips.sql", ip_address
     )
     return retVal is not None and not (isinstance(retVal, str) and "Error" in retVal)

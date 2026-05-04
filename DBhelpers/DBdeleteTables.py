@@ -1,7 +1,7 @@
 from .DBbaseline import get_mysql_connection
 
 import os
-deleteFolder = os.path.join(os.path.dirname(__file__), "..", "SQLiteQueries", "deleteHandler", "")
+deleteFolder = os.path.join(os.path.dirname(__file__), "..", "MySQLqueries", "deleteHandler", "")
 
 
 def execute_delete_from_file(sql_file_path, params=None):

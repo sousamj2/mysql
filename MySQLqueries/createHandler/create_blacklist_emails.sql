@@ -1,0 +1,5 @@
+CREATE TABLE IF NOT EXISTS blacklist_emails (
+    email_id CHAR(36) PRIMARY KEY,
+    email VARCHAR(255) UNIQUE,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);

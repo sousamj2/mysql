@@ -1,0 +1,11 @@
+CREATE TABLE IF NOT EXISTS users (
+  user_id    CHAR(36) PRIMARY KEY,
+  first_name VARCHAR(100) NOT NULL,
+  last_name  VARCHAR(100) NOT NULL,
+  email      VARCHAR(255) NOT NULL,
+  username   VARCHAR(100) NOT NULL,
+  h_password VARCHAR(255),
+  ign        VARCHAR(100),
+  g_token    BOOLEAN NOT NULL DEFAULT TRUE,
+  tier       TINYINT DEFAULT 1
+) ENGINE=InnoDB;
