@@ -109,8 +109,14 @@ def getHashFromEmail(email):
         return None
     return retVal
 
-def getEmailFromUsername(email):
-    retVal = getValueFromAnotherValue( selectFolder + "get_email_from_username.sql", email)
+def getEmailFromUsername(username):
+    retVal = getValueFromAnotherValue( selectFolder + "get_email_from_username.sql", username)
+    if isinstance(retVal,str) and "Error" in retVal:
+        return None
+    return retVal
+
+def getEmailFromIgn(ign):
+    retVal = getValueFromAnotherValue( selectFolder + "get_email_from_ign.sql", ign)
     if isinstance(retVal,str) and "Error" in retVal:
         return None
     return retVal

@@ -30,4 +30,20 @@ def refresh_last_login_and_ip(email, current_ip):
     finally:
         conn.close()
 
-    # print(status)
+    return status
+
+def update_mc_stats(email, uuid, rank, bank, claims, last_online):
+    conn = get_mysql_connection()
+    if not conn:
+        return "Error: DB connection failed"
+    try:
+        with open(updateFolder + "update_mc_stats.sql", 'r') as file:
+            sql_code = file.read()
+        cursor = conn.cursor()
+        cursor.execute(sql_code, (uuid, rank, bank, claims, last_online, email))
+        conn.commit()
+        return "MC stats updated"
+    except Exception as e:
+        return f"Error: {e}"
+    finally:
+        conn.close()

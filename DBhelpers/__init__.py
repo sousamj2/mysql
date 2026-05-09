@@ -23,6 +23,7 @@ from .DBinsertTables import (
 )
 from .DBselectTables import (
     get_user_profile_tier1,
+    getEmailFromIgn,
     getDataFromIPcreated,
     getUserIdFromEmail,
     getHashFromEmail,
@@ -41,7 +42,7 @@ from .DBdeleteTables import (
     deleteRegistrationToken,
     deleteExpiredRegistrationTokens,
 )
-from .DBupdateTables import refresh_last_login_and_ip
+from .DBupdateTables import refresh_last_login_and_ip, update_mc_stats
 
 __all__ = [
     "setup_mysql_database",
@@ -58,10 +59,12 @@ __all__ = [
     "save_quiz_history",
     "insertNewUser",
     "get_user_profile_tier1",
+    "getEmailFromIgn",
     "get_quiz_history_for_user",
     "getDataFromIPcreated",
     "getUserIdFromEmail",
     "refresh_last_login_and_ip",
+    "update_mc_stats",
     "getHashFromEmail",
     "getEmailFromUsername",
     "getQuestionIDsForYear",
