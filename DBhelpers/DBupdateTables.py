@@ -1,7 +1,7 @@
 # import sqlite3
 from datetime import datetime
-from DBhelpers.DBselectTables import getUserIdFromEmail
-from DBhelpers.DBbaseline import get_mysql_connection
+from .DBselectTables import getUserIdFromEmail
+from .DBbaseline import get_mysql_connection
 import os
 updateFolder = os.path.join(os.path.dirname(__file__), "..", "MySQLqueries", "updateHandler", "")
 

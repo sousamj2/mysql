@@ -102,7 +102,7 @@ def setup_mysql_database():
     )
     cursor = conn.cursor()
         
-    from DBhelpers import (
+    from . import (
         newTableResults,
         newTableConnectionData,
         newTableIPs,

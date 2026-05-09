@@ -1,7 +1,7 @@
 import json
 from uuid import uuid4
 from datetime import datetime # Import datetime
-from DBhelpers.DBselectTables import getUserIdFromEmail
+from .DBselectTables import getUserIdFromEmail
 import os
 insertFolder = os.path.join(os.path.dirname(__file__), "..", "MySQLqueries", "insertHandler", "")
 
