@@ -34,42 +34,36 @@ def create_tables(sql_file_path,cursor):
     return status
 
 
-def newTableIPs(cursor):
+def newTableIPs(cursor, app_name="mc_mjcrafts"):
     """
     Creates the 'iplist' table in the database.
-
-    This function calls the generic `create_tables` utility to execute the
-    SQL script for creating the `iplist` table.
-
-    Args:
-        cursor (pymysql.cursors.Cursor): The database cursor to use.
     """
-    return create_tables(sql_file_path=createFolder + "create_iplist.sql",cursor=cursor)
+    if app_name == "explicolivais":
+        sql_file = "create_iplist.sql"
+    else:
+        sql_file = "create_iplist_simplewebapp.sql"
+    return create_tables(sql_file_path=createFolder + sql_file, cursor=cursor)
 
-def newTableResults(cursor):
+def newTableResults(cursor, app_name="mc_mjcrafts"):
     """
     Creates the 'qresults' table in the database.
-
-    This function calls the generic `create_tables` utility to execute the
-    SQL script for creating the `qresults` table.
-
-    Args:
-        cursor (pymysql.cursors.Cursor): The database cursor to use.
     """
-    return create_tables(sql_file_path=createFolder + "create_qresults.sql",cursor=cursor)
+    if app_name == "explicolivais":
+        sql_file = "create_qresults.sql"
+    else:
+        sql_file = "create_qresults_simplewebapp.sql"
+    return create_tables(sql_file_path=createFolder + sql_file, cursor=cursor)
 
 
-def newTableConnectionData(cursor):
+def newTableConnectionData(cursor, app_name="mc_mjcrafts"):
     """
     Creates the 'connections' table in the database.
-
-    This function calls the generic `create_tables` utility to execute the
-    SQL script for creating the `connections` table.
-
-    Args:
-        cursor (pymysql.cursors.Cursor): The database cursor to use.
     """
-    return create_tables(sql_file_path=createFolder + "create_connections.sql",cursor=cursor)
+    if app_name == "explicolivais":
+        sql_file = "create_connections.sql"
+    else:
+        sql_file = "create_connections_simplewebapp.sql"
+    return create_tables(sql_file_path=createFolder + sql_file, cursor=cursor)
 
 
 def newTableUsers(cursor, app_name="mc_mjcrafts"):

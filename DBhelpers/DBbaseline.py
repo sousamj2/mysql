@@ -107,9 +107,9 @@ def setup_mysql_database(app_name: str = "mc_mjcrafts"):
         print(f"Using database '{MYSQL_NAME}'", flush=True)
         
         print(newTableUsers(cursor, app_name), flush=True)
-        print(newTableConnectionData(cursor), flush=True)
-        print(newTableIPs(cursor), flush=True)
-        print(newTableResults(cursor), flush=True)
+        print(newTableConnectionData(cursor, app_name), flush=True)
+        print(newTableIPs(cursor, app_name), flush=True)
+        print(newTableResults(cursor, app_name), flush=True)
         print(newTableBlacklistEmails(cursor), flush=True)
         print(newTableBlacklistIPs(cursor), flush=True)
         print(newTableRegistrationTokens(cursor), flush=True)
