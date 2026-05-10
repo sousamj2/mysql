@@ -92,19 +92,35 @@ def insertNewUser(first, last, email, h_password=None, username=None, ign=None):
     else:
         g_token = 0
 
-    user_id = str(uuid4())
+    try:
+        from flask import current_app
+        app_name = current_app.name
+    except RuntimeError:
+        app_name = None
 
-    insertFile = "insert_newUser.sql"
-    insertDict = {
-        "user_id": user_id,
-        "first": first,
-        "last": last,
-        "email": email,
-        "username": username,
-        "h_password": h_password,
-        "ign": ign,
-        "g_token": g_token,
-    }
+    if app_name == "explicolivais":
+        insertFile = "insert_newUser_explicolivais.sql"
+        insertDict = {
+            "first": first,
+            "last": last,
+            "email": email,
+            "username": username,
+            "h_password": h_password,
+            "g_token": g_token,
+        }
+    else:
+        user_id = str(uuid4())
+        insertFile = "insert_newUser.sql"
+        insertDict = {
+            "user_id": user_id,
+            "first": first,
+            "last": last,
+            "email": email,
+            "username": username,
+            "h_password": h_password,
+            "ign": ign,
+            "g_token": g_token,
+        }
     status = execute_insert_from_file(insertFolder + insertFile, insertDict)
     # print("Insert user:",status)
     return status
