@@ -340,3 +340,29 @@ def isIpBlacklisted(ip_address):
         selectFolder + "get_ip_from_blacklist_ips.sql", ip_address
     )
     return retVal is not None and not (isinstance(retVal, str) and "Error" in retVal)
+
+def get_user_profile_tier2(email):
+    # print("---------------------------------",email)
+    retVal = getValueFromAnotherValue( selectFolder + "get_T2profile_from_email.sql", email)
+    # print("---------------------------------",retVal)
+    if isinstance(retVal,str) and "Error" in retVal:
+        return None
+    return retVal
+
+def getDataFromNIF(nif):
+    retVal = getValueFromAnotherValue( selectFolder + "get_data_from_nif.sql", nif)
+    if isinstance(retVal,str) and "Error" in retVal:
+        return None
+    return retVal
+
+def getDataFromEmail(email):
+    retVal = getValueFromAnotherValue( selectFolder + "get_data_from_email.sql", email)
+    if isinstance(retVal,str) and "Error" in retVal:
+        return None
+    return retVal
+
+def getDataFromCellNumber(cellNumber):
+    retVal = getValueFromAnotherValue( selectFolder + "get_data_from_cellNumber.sql", cellNumber)
+    if isinstance(retVal,str) and "Error" in retVal:
+        return None
+    return retVal

@@ -92,6 +92,9 @@ def setup_mysql_database(app_name: str = "mc_mjcrafts"):
         newTableBlacklistEmails,
         newTableBlacklistIPs,
         newTableRegistrationTokens,
+        newTableClass,
+        newTableDocuments,
+        newTablePersonalData,
     )
 
     try:
@@ -110,6 +113,11 @@ def setup_mysql_database(app_name: str = "mc_mjcrafts"):
         print(newTableBlacklistEmails(cursor), flush=True)
         print(newTableBlacklistIPs(cursor), flush=True)
         print(newTableRegistrationTokens(cursor), flush=True)
+        
+        if app_name == "explicolivais":
+            print(newTableClass(cursor), flush=True)
+            print(newTableDocuments(cursor), flush=True)
+            print(newTablePersonalData(cursor), flush=True)
         
         # Commit the changes
         print("Database setup completed successfully!", flush=True)

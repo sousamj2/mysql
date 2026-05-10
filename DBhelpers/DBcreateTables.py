@@ -125,3 +125,21 @@ def newTableRegistrationTokens(cursor):
         cursor (pymysql.cursors.Cursor): The database cursor to use.
     """
     return create_tables(sql_file_path=createFolder + "create_registration_tokens.sql",cursor=cursor)
+
+def newTableClass(cursor):
+    """
+    Creates the 'classes' table in the database.
+    """
+    return create_tables(sql_file_path=createFolder + "create_classes.sql",cursor=cursor)
+
+def newTableDocuments(cursor):
+    """
+    Creates the 'documents' table in the database.
+    """
+    return create_tables(sql_file_path=createFolder + "create_documents.sql",cursor=cursor)
+
+def newTablePersonalData(cursor):
+    """
+    Creates the 'personal' table in the database.
+    """
+    return create_tables(sql_file_path=createFolder + "create_personal.sql",cursor=cursor)

@@ -7,7 +7,7 @@ CREATE TABLE IF NOT EXISTS qresults (
   n_correct  INT NOT NULL,
   n_wrong    INT NOT NULL,
   n_skip     INT NOT NULL,
-  user_id    CHAR(36),
+  user_id    INT,
   start_ts   DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   finish_ts  DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   CONSTRAINT fk_qresults_user
