@@ -72,7 +72,7 @@ def newTableConnectionData(cursor):
     return create_tables(sql_file_path=createFolder + "create_connections.sql",cursor=cursor)
 
 
-def newTableUsers(cursor):
+def newTableUsers(cursor, app_name="mc_mjcrafts"):
     """
     Creates the 'users' table in the database.
 
@@ -81,8 +81,14 @@ def newTableUsers(cursor):
 
     Args:
         cursor (pymysql.cursors.Cursor): The database cursor to use.
+        app_name (str): The name of the application to determine the correct schema.
     """
-    return create_tables(sql_file_path=createFolder + "create_users.sql",cursor=cursor)
+    if app_name == "explicolivais":
+        sql_file = "create_users_explicolivais.sql"
+    else:
+        sql_file = "create_users_simplewebapp.sql"
+    
+    return create_tables(sql_file_path=createFolder + sql_file, cursor=cursor)
 
 def newTableBlacklistEmails(cursor):
     """
