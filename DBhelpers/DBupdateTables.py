@@ -42,8 +42,10 @@ def update_mc_stats(email, uuid, rank, bank, claims, last_online):
         cursor = conn.cursor()
         cursor.execute(sql_code, (uuid, rank, bank, claims, last_online, email))
         conn.commit()
+        print(f"[DEBUG] DB Sync Success: Updated stats for {email}", flush=True)
         return "MC stats updated"
     except Exception as e:
+        print(f"[DEBUG] DB Sync ERROR: {e}", flush=True)
         return f"Error: {e}"
     finally:
         conn.close()
