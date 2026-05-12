@@ -44,6 +44,7 @@ def get_mysql_connection(use_dict_cursor: bool = False):
             )
         return conn
     except Exception as e:
+        print(f"Error connecting: {e}")
         return None
 
 
@@ -114,9 +115,11 @@ def setup_mysql_database(app_name: str = "mc_mjcrafts"):
             newTableClass(cursor)
             newTableDocuments(cursor)
             newTablePersonalData(cursor)
+        
+        print("Database setup completed successfully!", flush=True)
                 
-    except Exception:
-        pass
+    except Exception as err:
+        print(f"Error: {err}")
     
     finally:
         cursor.close()
