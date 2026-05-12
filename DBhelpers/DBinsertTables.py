@@ -98,8 +98,6 @@ def insertNewUser(first, last, email, h_password=None, username=None, ign=None):
     except RuntimeError:
         app_name = None
 
-    print(f"[DEBUG] DB Insert: app_name detected as '{app_name}'", flush=True)
-
     if app_name == "explicolivais":
         insertFile = "insert_newUser_explicolivais.sql"
         insertDict = {
