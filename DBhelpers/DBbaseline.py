@@ -44,7 +44,6 @@ def get_mysql_connection(use_dict_cursor: bool = False):
             )
         return conn
     except Exception as e:
-        print(f"Error connecting: {e}")
         return None
 
 
@@ -100,46 +99,24 @@ def setup_mysql_database(app_name: str = "mc_mjcrafts"):
     try:
         # Create database if it doesn't exist
         cursor.execute(f"CREATE DATABASE IF NOT EXISTS {MYSQL_NAME}")
-        print(f"Database '{MYSQL_NAME}' created or already exists", flush=True)
-        
         # Switch to the database
         cursor.execute(f"USE {MYSQL_NAME}")
-        print(f"Using database '{MYSQL_NAME}'", flush=True)
         
-        print(f"Creating/Checking table: users ({app_name})", flush=True)
-        print(newTableUsers(cursor, app_name), flush=True)
-        
-        print(f"Creating/Checking table: connections ({app_name})", flush=True)
-        print(newTableConnectionData(cursor, app_name), flush=True)
-        
-        print(f"Creating/Checking table: iplist ({app_name})", flush=True)
-        print(newTableIPs(cursor, app_name), flush=True)
-        
-        print(f"Creating/Checking table: qresults ({app_name})", flush=True)
-        print(newTableResults(cursor, app_name), flush=True)
-        
-        print("Creating/Checking table: blacklist_emails", flush=True)
-        print(newTableBlacklistEmails(cursor), flush=True)
-        
-        print("Creating/Checking table: blacklist_ips", flush=True)
-        print(newTableBlacklistIPs(cursor), flush=True)
-        
-        print("Creating/Checking table: registration_tokens", flush=True)
-        print(newTableRegistrationTokens(cursor), flush=True)
+        newTableUsers(cursor, app_name)
+        newTableConnectionData(cursor, app_name)
+        newTableIPs(cursor, app_name)
+        newTableResults(cursor, app_name)
+        newTableBlacklistEmails(cursor)
+        newTableBlacklistIPs(cursor)
+        newTableRegistrationTokens(cursor)
         
         if app_name == "explicolivais":
-            print("Creating/Checking table: classes", flush=True)
-            print(newTableClass(cursor), flush=True)
-            print("Creating/Checking table: documents", flush=True)
-            print(newTableDocuments(cursor), flush=True)
-            print("Creating/Checking table: personal", flush=True)
-            print(newTablePersonalData(cursor), flush=True)
-        
-        # Commit the changes
-        print("Database setup completed successfully!", flush=True)
+            newTableClass(cursor)
+            newTableDocuments(cursor)
+            newTablePersonalData(cursor)
                 
-    except Exception as err:
-        print(f"Error: {err}")
+    except Exception:
+        pass
     
     finally:
         cursor.close()
