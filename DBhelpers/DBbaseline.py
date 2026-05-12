@@ -106,17 +106,33 @@ def setup_mysql_database(app_name: str = "mc_mjcrafts"):
         cursor.execute(f"USE {MYSQL_NAME}")
         print(f"Using database '{MYSQL_NAME}'", flush=True)
         
+        print(f"Creating/Checking table: users ({app_name})", flush=True)
         print(newTableUsers(cursor, app_name), flush=True)
+        
+        print(f"Creating/Checking table: connections ({app_name})", flush=True)
         print(newTableConnectionData(cursor, app_name), flush=True)
+        
+        print(f"Creating/Checking table: iplist ({app_name})", flush=True)
         print(newTableIPs(cursor, app_name), flush=True)
+        
+        print(f"Creating/Checking table: qresults ({app_name})", flush=True)
         print(newTableResults(cursor, app_name), flush=True)
+        
+        print("Creating/Checking table: blacklist_emails", flush=True)
         print(newTableBlacklistEmails(cursor), flush=True)
+        
+        print("Creating/Checking table: blacklist_ips", flush=True)
         print(newTableBlacklistIPs(cursor), flush=True)
+        
+        print("Creating/Checking table: registration_tokens", flush=True)
         print(newTableRegistrationTokens(cursor), flush=True)
         
         if app_name == "explicolivais":
+            print("Creating/Checking table: classes", flush=True)
             print(newTableClass(cursor), flush=True)
+            print("Creating/Checking table: documents", flush=True)
             print(newTableDocuments(cursor), flush=True)
+            print("Creating/Checking table: personal", flush=True)
             print(newTablePersonalData(cursor), flush=True)
         
         # Commit the changes
