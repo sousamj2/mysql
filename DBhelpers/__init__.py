@@ -11,6 +11,9 @@ from .DBcreateTables import (
     newTableBlacklistEmails,
     newTableBlacklistIPs,
     newTableRegistrationTokens,
+    newTableClass,
+    newTableDocuments,
+    newTablePersonalData,
 )
 from .DBinsertTables import (
     insertNewConnectionData,
@@ -19,7 +22,12 @@ from .DBinsertTables import (
     insertNewUser,
     insertNewBlacklistEmail,
     insertNewBlacklistIP,
+    insertNewBlacklistEmail as insertNewBlacklistedEmail,
+    insertNewBlacklistIP as insertNewBlacklistedIP,
     insertNewRegistrationToken,
+    insertNewClass,
+    insertNewDocument,
+    insertNewPersonalData,
 )
 from .DBselectTables import (
     get_user_profile_tier1,
@@ -37,6 +45,10 @@ from .DBselectTables import (
     getRegistrationTokenByEmailOrIP,
     getRegistrationTokenByToken,
     isIpBlacklisted,
+    get_user_profile_tier2,
+    getDataFromNIF,
+    getDataFromEmail,
+    getDataFromCellNumber,
 )
 from .DBdeleteTables import (
     deleteRegistrationToken,
@@ -74,10 +86,23 @@ __all__ = [
     "isEmailBlacklisted",
     "insertNewBlacklistEmail",
     "insertNewBlacklistIP",
+    "insertNewBlacklistedEmail",
+    "insertNewBlacklistedIP",
     "insertNewRegistrationToken",
     "getRegistrationToken",
     "getRegistrationTokenByEmailOrIP",
     "deleteRegistrationToken",
     "deleteExpiredRegistrationTokens",
+    "deleteExpiredRegistrationTokens",
     "isIpBlacklisted",
+    "newTableClass",
+    "newTableDocuments",
+    "newTablePersonalData",
+    "insertNewClass",
+    "insertNewDocument",
+    "insertNewPersonalData",
+    "get_user_profile_tier2",
+    "getDataFromNIF",
+    "getDataFromEmail",
+    "getDataFromCellNumber",
 ]

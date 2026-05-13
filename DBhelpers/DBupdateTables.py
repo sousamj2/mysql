@@ -37,6 +37,12 @@ def update_mc_stats(email, uuid, rank, bank, claims, last_online):
     if not conn:
         return "Error: DB connection failed"
     try:
+        # Convert "NA" to None for database compatibility
+        uuid = None if uuid == "NA" else uuid
+        rank = None if rank == "NA" else rank
+        bank = None if bank == "NA" else bank
+        claims = None if claims == "NA" else claims
+        
         with open(updateFolder + "update_mc_stats.sql", 'r') as file:
             sql_code = file.read()
         cursor = conn.cursor()

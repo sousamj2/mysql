@@ -92,19 +92,35 @@ def insertNewUser(first, last, email, h_password=None, username=None, ign=None):
     else:
         g_token = 0
 
-    user_id = str(uuid4())
+    try:
+        from flask import current_app
+        app_name = current_app.name
+    except RuntimeError:
+        app_name = None
 
-    insertFile = "insert_newUser.sql"
-    insertDict = {
-        "user_id": user_id,
-        "first": first,
-        "last": last,
-        "email": email,
-        "username": username,
-        "h_password": h_password,
-        "ign": ign,
-        "g_token": g_token,
-    }
+    if app_name == "explicolivais":
+        insertFile = "insert_newUser_explicolivais.sql"
+        insertDict = {
+            "first": first,
+            "last": last,
+            "email": email,
+            "username": username,
+            "h_password": h_password,
+            "g_token": g_token,
+        }
+    else:
+        user_id = str(uuid4())
+        insertFile = "insert_newUser.sql"
+        insertDict = {
+            "user_id": user_id,
+            "first": first,
+            "last": last,
+            "email": email,
+            "username": username,
+            "h_password": h_password,
+            "ign": ign,
+            "g_token": g_token,
+        }
     status = execute_insert_from_file(insertFolder + insertFile, insertDict)
     # print("Insert user:",status)
     return status
@@ -267,3 +283,96 @@ def insertNewRegistrationToken(token, ip_address, email):
     insertDict = {"token": token, "ip_address": ip_address, "email": email}
     status = execute_insert_from_file(insertFolder + insertFile, insertDict)
     return status
+
+def insertNewPersonalData(
+    email, address, number, floor, door, notes, zip_code1, zip_code2, cell_phone, nif
+):
+    """
+    Inserts a new record into the 'personal' table for a given user.
+
+    This function retrieves the user's ID based on their email, then inserts their
+    detailed personal information (address, NIF, etc.) into the database.
+
+    Args:
+        email (str): The email of the user to whom the data belongs.
+        address (str): The user's street address.
+        number (str): The building number.
+        floor (str): The floor.
+        door (str): The apartment/door number.
+        notes (str): Any additional notes.
+        zip_code1 (str): The first part of the ZIP code.
+        zip_code2 (str): The second part of the ZIP code.
+        cell_phone (str): The user's cell phone number.
+        nif (str): The user's NIF (tax identification number).
+
+    Returns:
+        str: A status message from the database insertion operation.
+    """
+    insertFile = "insert_newPersonalData.sql"
+    user_id = getUserIdFromEmail(email)
+    if not user_id:
+        return "ERROR: There is no user with this email: {email}."
+    insertDict = {
+        "user_id": user_id,
+        "address": address,
+        "number": number,
+        "floor": floor,
+        "door": door,
+        "notes": notes,
+        "zip_code1": zip_code1,
+        "zip_code2": zip_code2,
+        "cell_phone": cell_phone,
+        "nfiscal": nif,
+    }
+    status = execute_insert_from_file(insertFolder + insertFile, insertDict)
+    # print("Insert personal:",status)
+    return status
+
+
+def insertNewDocument(email, docname, docurl):
+    """
+    Inserts a new document record into the 'documents' table for a given user.
+
+    Args:
+        email (str): The email of the user who owns the document.
+        docname (str): The name or title of the document.
+        docurl (str): The URL or path where the document is stored.
+
+    Returns:
+        str: A status message from the database insertion operation.
+    """
+    insertFile = "insert_newDocument.sql"
+    user_id = getUserIdFromEmail(email)
+    if not user_id:
+        return "ERROR: There is no user with this email: {email}."
+    insertDict = {"user_id": user_id, "docname": docname, "docurl": docurl}
+    status = execute_insert_from_file(insertFolder + insertFile, insertDict)
+    return status
+
+
+def insertNewClass(email, year, childName, disciplina="Matemática"):
+    """
+    Inserts a new class registration into the 'classes' table for a given user.
+
+    Args:
+        email (str): The email of the parent/user registering the class.
+        year (int): The academic year of the class.
+        childName (str): The name of the child attending the class.
+        disciplina (str, optional): The subject of the class. Defaults to "Matemática".
+
+    Returns:
+        str: A status message from the database insertion operation.
+    """
+    insertFile = "insert_newClass.sql"
+    user_id = getUserIdFromEmail(email)
+    if not user_id:
+        return "ERROR: There is no user with this email: {email}."
+    insertDict = {
+        "user_id": user_id,
+        "year": year,
+        "childName": childName,
+        "disciplica": disciplina,
+    }
+    status = execute_insert_from_file(insertFolder + insertFile, insertDict)
+    return status
+

@@ -1,6 +1,7 @@
 from flask import current_app
-from config import DevelopmentConfig
 import pymysql
+import sys
+import os
 
 def get_mysql_connection(use_dict_cursor: bool = False):
     """
@@ -47,47 +48,28 @@ def get_mysql_connection(use_dict_cursor: bool = False):
         return None
 
 
-def setup_mysql_database():
+def setup_mysql_database(app_name: str = "mc_mjcrafts"):
     """
     Initializes the application's database schema.
-
-    This setup utility connects to the MySQL server and performs the initial
-    database and table creation. It is intended to be run once to bootstrap the
-    database environment or for resetting it during development.
-
-    The function performs the following actions:
-    1.  Connects to the MySQL server using credentials from the development config.
-    2.  Executes a `CREATE DATABASE IF NOT EXISTS` statement to ensure the main
-        application database exists.
-    3.  Switches to the newly created or existing database.
-    4.  Calls a series of helper functions (`newTableUsers`, `newTableConnectionData`,
-        etc.) to create each of the application's tables.
-    5.  Prints progress and error messages to the console.
     """
-    # # Load from env vars or AWS Secrets/Parameter Store
-    # MYSQL_HOST = current_app.config['MYSQL_HOST']
-    # MYSQL_NAME = current_app.config['MYSQL_DBNAME']
-    # MYSQL_USER = current_app.config['MYSQL_USER']
-    # MYSQL_PASS = current_app.config['MYSQL_PASSWORD']
-    # MYSQL_PORT = int(current_app.config['MYSQL_PORT'])
-
+    import importlib.util
+    
+    # Dynamically import the config based on app_name
+    if app_name == "explicolivais":
+        config_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../explicolivais/config.py'))
+    else:
+        config_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../simplewebapp/config.py'))
+        
+    spec = importlib.util.spec_from_file_location("dynamic_config", config_path)
+    config_module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(config_module)
+    DevelopmentConfig = config_module.DevelopmentConfig
 
     MYSQL_HOST = DevelopmentConfig.MYSQL_HOST or ""
-    # MYSQL_HOST = "localhost"
     MYSQL_NAME = DevelopmentConfig.MYSQL_DBNAME or ""
     MYSQL_USER = DevelopmentConfig.MYSQL_USER or ""
     MYSQL_PASS = DevelopmentConfig.MYSQL_PASSWORD or ""
     MYSQL_PORT = DevelopmentConfig.MYSQL_PORT or ""
-    # MYSQL_PORT = 3307
-    
-    # print()
-    # print(MYSQL_HOST)
-    # print(MYSQL_NAME)
-    # print(MYSQL_USER)
-    # print(MYSQL_PASS)
-    # print(MYSQL_PORT)
-    # print()
-
 
     # Connect to MySQL server (without specifying database)
     conn = pymysql.connect (
@@ -110,26 +92,30 @@ def setup_mysql_database():
         newTableBlacklistEmails,
         newTableBlacklistIPs,
         newTableRegistrationTokens,
+        newTableClass,
+        newTableDocuments,
+        newTablePersonalData,
     )
 
     try:
         # Create database if it doesn't exist
         cursor.execute(f"CREATE DATABASE IF NOT EXISTS {MYSQL_NAME}")
-        print(f"Database '{MYSQL_NAME}' created or already exists", flush=True)
-        
         # Switch to the database
         cursor.execute(f"USE {MYSQL_NAME}")
-        print(f"Using database '{MYSQL_NAME}'", flush=True)
         
-        print(newTableUsers(cursor), flush=True)
-        print(newTableConnectionData(cursor), flush=True)
-        print(newTableIPs(cursor), flush=True)
-        print(newTableResults(cursor), flush=True)
-        print(newTableBlacklistEmails(cursor), flush=True)
-        print(newTableBlacklistIPs(cursor), flush=True)
-        print(newTableRegistrationTokens(cursor), flush=True)
+        newTableUsers(cursor, app_name)
+        newTableConnectionData(cursor, app_name)
+        newTableIPs(cursor, app_name)
+        newTableResults(cursor, app_name)
+        newTableBlacklistEmails(cursor)
+        newTableBlacklistIPs(cursor)
+        newTableRegistrationTokens(cursor)
         
-        # Commit the changes
+        if app_name == "explicolivais":
+            newTableClass(cursor)
+            newTableDocuments(cursor)
+            newTablePersonalData(cursor)
+        
         print("Database setup completed successfully!", flush=True)
                 
     except Exception as err:

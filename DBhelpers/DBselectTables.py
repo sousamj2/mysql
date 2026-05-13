@@ -154,10 +154,18 @@ def get_quiz_history_by_uuid(email, quiz_uuid):
     
 
 def get_user_profile_tier1(email):
-    # print("---------------------------------",email)
-    retVal = getValueFromAnotherValue( selectFolder + "get_T1profile_from_email.sql", email)
-    # print("---------------------------------",retVal)
-    if isinstance(retVal,str) and "Error" in retVal:
+    try:
+        from flask import current_app
+        app_name = current_app.name
+    except RuntimeError:
+        app_name = None
+
+    if app_name == "explicolivais":
+        retVal = getValueFromAnotherValue(selectFolder + "get_T1profile_from_email_explicolivais.sql", email)
+    else:
+        retVal = getValueFromAnotherValue(selectFolder + "get_T1profile_from_email.sql", email)
+    
+    if isinstance(retVal, str) and "Error" in retVal:
         return None
     return retVal
 
@@ -340,3 +348,38 @@ def isIpBlacklisted(ip_address):
         selectFolder + "get_ip_from_blacklist_ips.sql", ip_address
     )
     return retVal is not None and not (isinstance(retVal, str) and "Error" in retVal)
+
+def get_user_profile_tier2(email):
+    try:
+        from flask import current_app
+        app_name = current_app.name
+    except RuntimeError:
+        app_name = None
+
+    if app_name == "explicolivais":
+        retVal = getValueFromAnotherValue(selectFolder + "get_T2profile_from_email_explicolivais.sql", email)
+    else:
+        # Fallback to T1 if T2 file doesn't exist for other apps yet
+        retVal = getValueFromAnotherValue(selectFolder + "get_T2profile_from_email.sql", email)
+    
+    if isinstance(retVal, str) and "Error" in retVal:
+        return None
+    return retVal
+
+def getDataFromNIF(nif):
+    retVal = getValueFromAnotherValue( selectFolder + "get_data_from_nif.sql", nif)
+    if isinstance(retVal,str) and "Error" in retVal:
+        return None
+    return retVal
+
+def getDataFromEmail(email):
+    retVal = getValueFromAnotherValue( selectFolder + "get_data_from_email.sql", email)
+    if isinstance(retVal,str) and "Error" in retVal:
+        return None
+    return retVal
+
+def getDataFromCellNumber(cellNumber):
+    retVal = getValueFromAnotherValue( selectFolder + "get_data_from_cellNumber.sql", cellNumber)
+    if isinstance(retVal,str) and "Error" in retVal:
+        return None
+    return retVal
